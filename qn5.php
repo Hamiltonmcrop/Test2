@@ -1,5 +1,8 @@
 #!/usr/bin/php
 <?php
+//First name:Navjot
+//Second name:singh
+//Studnet Id:202104362
 echo "Enter a sentence: ";
 $sentence = trim(fgets(STDIN));
 
