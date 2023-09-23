@@ -1,0 +1,151 @@
+###2.6.1.2 Lab - Securing the Router for Administrative Access
+
+########R1############
+
+configure terminal
+no ip domain-lookup
+int g1/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+int s3/0
+ip address 10.1.1.1 255.255.255.252
+clock rate 64000
+no shutdown
+exit
+router ospf 1
+network 192.168.1.0 0.0.0.255 area 0
+network 10.1.1.0 0.0.0.3 area 0
+passive-interface g1/0
+end
+
+########R2############
+
+configure terminal
+no ip domain-lookup
+int s3/0
+ip address 10.1.1.2 255.255.255.252
+no shutdown
+int s3/1
+ip address 10.2.2.2 255.255.255.252
+clock rate 64000
+no shutdown
+exit
+router ospf 1
+network 10.2.2.0 0.0.0.3 area 0
+network 10.1.1.0 0.0.0.3 area 0
+end
+
+########R3############
+
+configure terminal
+no ip domain-lookup
+int g1/0
+ip address 192.168.3.1 255.255.255.0
+no shutdown
+int s3/1
+ip address 10.2.2.1 255.255.255.252
+no shutdown
+exit
+router ospf 1
+network 192.168.3.0 0.0.0.255 area 0
+network 10.2.2.0 0.0.0.3 area 0
+passive-interface g1/0
+end
+
+####3.6.1.1 Lab - Securing Administrative Access Using AAA and RADIUS
+
+########R1############
+
+configure terminal
+no ip domain-lookup
+int g1/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+int s3/0
+ip address 10.1.1.1 255.255.255.252
+clock rate 64000
+no shutdown
+exit
+ip route 0.0.0.0 0.0.0.0 10.1.1.2
+end
+
+########R2############
+
+configure terminal
+no ip domain-lookup
+int s3/0
+ip address 10.1.1.2 255.255.255.252
+no shutdown
+int s3/1
+ip address 10.2.2.2 255.255.255.252
+clock rate 64000
+no shutdown
+exit
+ip route 192.168.1.0 255.255.255.0 10.1.1.1
+ip route 192.168.3.0 255.255.255.0 10.2.2.1
+end
+
+########R3############
+
+configure terminal
+no ip domain-lookup
+int g1/0
+ip address 192.168.3.1 255.255.255.0
+no shutdown
+int s3/1
+ip address 10.2.2.1 255.255.255.252
+no shutdown
+exit
+ip route 0.0.0.0 0.0.0.0 10.2.2.2
+end
+
+####4.4.1.2 Lab - Configuring Zone-Based Policy Firewalls
+
+########R1############
+
+configure terminal
+no ip domain-lookup
+int g1/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+int s3/0
+ip address 10.1.1.1 255.255.255.252
+clock rate 64000
+no shutdown
+exit
+ip route 0.0.0.0 0.0.0.0 10.1.1.2
+end
+
+########R2############
+
+configure terminal
+no ip domain-lookup
+int s3/0
+ip address 10.1.1.2 255.255.255.252
+no shutdown
+int s3/1
+ip address 10.2.2.2 255.255.255.252
+clock rate 64000
+no shutdown
+exit
+ip route 192.168.1.0 255.255.255.0 10.1.1.1
+ip route 192.168.3.0 255.255.255.0 10.2.2.1
+ip route 192.168.33.0 255.255.255.0 10.2.2.1
+end
+
+########R3############
+
+configure terminal
+no ip domain-lookup
+int g1/0
+ip address 192.168.3.1 255.255.255.0
+no shutdown
+int fa2/0
+ip address 192.168.33.1 255.255.255.0
+no shutdown
+int s3/1
+ip address 10.2.2.1 255.255.255.252
+no shutdown
+exit
+ip route 0.0.0.0 0.0.0.0 10.2.2.2
+end
